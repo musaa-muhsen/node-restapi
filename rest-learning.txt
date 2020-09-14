@@ -1,0 +1,4 @@
+There's some confusion on the internet about what happens when you call Model.find() in Mongoose.
+Make no mistake, Model.find() does what you expect: find all documents that match a query.
+But there's some confusion about Model.find() vs Query#find(), setting options, promise support. 
+In this article, I'll provide a conceptual overview of what happens when you call Model.find() so you can answer similar questions for yourself.
