@@ -13,6 +13,10 @@ const subscriberSchema = new mongoose.Schema({
         type: Date,
         required: true,
         default: Date.now
+    },
+    productImage: {
+        type: String,
+        required: true
     }
 
 })

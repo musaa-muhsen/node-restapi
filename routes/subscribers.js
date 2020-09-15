@@ -2,6 +2,37 @@ const express = require('express');
 const router = express.Router();
 const Subscriber = require('../models/Subscriber'); // this is a JSON api 
 
+const multer = require('multer');
+// needed because there is no such route in our project we got routes for posting and getting our products but we have no route to handle requests at a slash uploads url and by default that folder isn't publicly accessible eith 
+// image upload with multer 
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './uploads/');
+    }, 
+    filename: function (req, file, cb) {
+         //cb(null, new Date().toISOString() + file.originalname); // with date 
+        //cb(null, file.originalname)
+        cb(null, Date.now() + file.originalname); 
+    }
+})
+
+// const fileFilter = (req, file, cb) => {
+//     // new Error('message)
+//     if (file.mimetype === 'image/jpg' || file.mimetype === 'image/png') {
+//          cb(null, true) 
+//     } else {
+//         cb(new Error('message'), false)
+
+//     }
+// }
+
+const upload = multer({
+    storage: storage,
+     limits: {
+    fileSize: 1024 * 1024 * 5
+
+}});
+
 // Getting all
 router.get('/', async (req,res) => {
     try {
@@ -21,12 +52,14 @@ router.get('/:id', getSubScriber ,(req,res) => {
 
 // this is going to be asynchronous function because we're going to be to save that model which is an asynchronous operation 
 // creating one // they are going to be creating it on the general route so no need for /:id
-router.post('/', async (req, res) => {
+router.post('/', upload.single('productImage') ,async (req, res) => {
+    console.log(req.file); // .file object is available to us due to upload.single('productImage') 
     // new instance of Subscriber
  const subscriber = new Subscriber({
      name: req.body.name,  /*body is whatever the user sends to us which going to be JSON */
-     subscribedToChannel: req.body.subscribedToChannel
- })
+     subscribedToChannel: req.body.subscribedToChannel,
+     productImage: req.file.path
+ });
    
  try {
     const newSubscriber = await subscriber.save() // persistanting to the database will take some time so it's a asynchronous situation

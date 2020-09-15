@@ -5,7 +5,11 @@ const express = require('express'); // express libary
 const app = express(); // app variable to configure our server
 const mongoose = require('mongoose')// mongoose to connect to our mongoDB database 
 
+app.use(express.static('uploads')); // needed because there is no such route in our project we got routes for posting and getting our products but we have no route to handle requests at a slash uploads url and by default that folder isn't publicly accessible eith 
+
+// middleware 
 app.use(express.json()) // this essentially just lets our server accept JSON as a body instead of a post element or whatever 
+app.use(cors()); // enable cors 
 
 /*
 app.use((req, res, next) => {
@@ -26,7 +30,9 @@ app.use((req, res, next) => {
 //app.use(cors());
 */
 
-app.use(cors());
+
+
+
 mongoose.connect(process.env.DATABASE_URL , {useNewUrlParser: true,useUnifiedTopology: true})
 const db = mongoose.connection;
 
