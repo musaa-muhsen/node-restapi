@@ -1,11 +1,32 @@
 require('dotenv').config() // this is going to load all of our enviroment variables from our .env 
 
+const cors = require('cors');
 const express = require('express'); // express libary 
 const app = express(); // app variable to configure our server
 const mongoose = require('mongoose')// mongoose to connect to our mongoDB database 
 
 app.use(express.json()) // this essentially just lets our server accept JSON as a body instead of a post element or whatever 
 
+/*
+app.use((req, res, next) => {
+   res.header("Access-Control-Allow-Origin", "*");
+   res.header (
+       "Access-Control-Allow-Headers",
+       "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+   );
+   if (req.method === 'OPTIONS') {
+       res.header('Access-Control-Allow-Headers', 'PUT, POST, PATCH, DELETE , GET' )
+       return res.status(200).json({});
+   }
+   next()
+});
+
+//or
+
+//app.use(cors());
+*/
+
+app.use(cors());
 mongoose.connect(process.env.DATABASE_URL , {useNewUrlParser: true,useUnifiedTopology: true})
 const db = mongoose.connection;
 
