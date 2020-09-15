@@ -5,7 +5,7 @@ const express = require('express'); // express libary
 const app = express(); // app variable to configure our server
 const mongoose = require('mongoose')// mongoose to connect to our mongoDB database 
 
-app.use(express.static('uploads')); // needed because there is no such route in our project we got routes for posting and getting our products but we have no route to handle requests at a slash uploads url and by default that folder isn't publicly accessible eith 
+app.use('/uploads', express.static('uploads')); // needed because there is no such route in our project we got routes for posting and getting our products but we have no route to handle requests at a slash uploads url and by default that folder isn't publicly accessible eith 
 
 // middleware 
 app.use(express.json()) // this essentially just lets our server accept JSON as a body instead of a post element or whatever 
